@@ -40,7 +40,6 @@ msg_info "Installing Webtrees"
 RELEASE=$(curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/latest | grep -oP '"tag_name": "\K(.*?)(?=")')
 wget -q "https://github.com/fisharebest/webtrees/releases/download/${RELEASE}/webtrees-${RELEASE}.zip" -O /tmp/webtrees.zip
 unzip -q /tmp/webtrees.zip -d /var/www/
-mv /var/www/webtrees-${RELEASE} /var/www/webtrees
 chown -R www-data:www-data /var/www/webtrees
 msg_ok "Installed Webtrees"
 
