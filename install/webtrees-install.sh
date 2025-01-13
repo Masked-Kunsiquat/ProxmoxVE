@@ -35,7 +35,10 @@ $STD apt-get install -y php8.3-{fpm,mysql,gd,intl,xml,zip}
 msg_ok "Added PHP-8.3 repository and its dependencies"
 
 msg_info "Setting PHP 8.3 as default"
+$STD update-alternatives --install /usr/sbin/php php /usr/bin/php8.3 83
 $STD update-alternatives --set php /usr/bin/php8.3
+
+$STD update-alternatives --install /usr/sbin/php-fpm php-fpm /usr/sbin/php-fpm8.3 83
 $STD update-alternatives --set php-fpm /usr/sbin/php-fpm8.3
 msg_ok "Set PHP 8.3 as default"
 
