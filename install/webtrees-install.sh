@@ -13,6 +13,16 @@ setting_up_container
 network_check
 update_os
 
+msg_info "Adding PHP 8.3 repository"
+$STD apt-get install -y \
+    lsb-release \
+    ca-certificates \
+    apt-transport-https \
+    software-properties-common
+$STD apt-get-repository ppa:ondrej/php -y
+$STD apt-get update
+msg_ok "Added PHP 8.3 repository"
+
 msg_info "Installing Dependencies"
 $STD apt-get install -y \
     mc \
@@ -20,9 +30,14 @@ $STD apt-get install -y \
     curl \
     unzip \
     nginx \
-    php-{fpm,mysql,gd,intl,xml,zip} \
+    php8.3-{fpm,mysql,gd,intl,xml,zip} \
     mariadb-server
 msg_ok "Installed Dependencies"
+
+msg_info "Setting PHP 8.3 as default"
+$STD update-alternatives --set php /usr/bin/php8.3
+$STD update-alternatives --set php-fpm /usr/sbin/php-fpm8.3
+msg_ok "Set PHP 8.3 as default"
 
 msg_info "Configuring MariaDB"
 DB_NAME="webtrees"
