@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 # Copyright (c)
-# Author: YourName
+# Author: Maked-Kunsiquat
 # License: MIT
-# Source: GitHub link
+# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://github.com/fisharebest/webtrees
 
 source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
 color
@@ -52,19 +53,19 @@ mysql -u root -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';"
 mysql -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
 mysql -u root -e "FLUSH PRIVILEGES;"
 {
-    echo "Webtrees Credentials:"
+    echo "${APP} Database Credentials:"
     echo "Database: $DB_NAME"
     echo "User: $DB_USER"
     echo "Password: $DB_PASS"
 } >> ~/webtrees.creds
 msg_ok "Configured MariaDB"
 
-msg_info "Installing Webtrees"
+msg_info "Installing ${APP}"
 RELEASE=$(curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/latest | grep -oP '"tag_name": "\K(.*?)(?=")')
 wget -q "https://github.com/fisharebest/webtrees/releases/download/${RELEASE}/webtrees-${RELEASE}.zip" -O /tmp/webtrees.zip
 unzip -q /tmp/webtrees.zip -d /var/www/
 chown -R www-data:www-data /var/www/webtrees
-msg_ok "Installed Webtrees"
+msg_ok "Installed ${APP}"
 
 msg_info "Configuring Web Server"
 cat <<EOF >/etc/nginx/sites-available/webtrees
@@ -95,5 +96,5 @@ systemctl reload nginx
 msg_ok "Configured Web Server"
 
 msg_info "Finalizing Installation"
-echo "${RELEASE}" > /opt/webtrees_version.txt
-msg_ok "Webtrees is ready!"
+echo "${RELEASE}" > "/opt/${APP}_version.txt"
+msg_ok "${APP} is ready!"

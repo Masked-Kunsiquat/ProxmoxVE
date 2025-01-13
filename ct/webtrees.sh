@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 source <(curl -s https://raw.githubusercontent.com/Masked-Kunsiquat/ProxmoxVE/webtrees/misc/build.func)
+# Copyright (c)
+# Author: Maked-Kunsiquat
+# License: MIT
+# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://github.com/fisharebest/webtrees
 
 # App Default Values
 APP="Webtrees"
@@ -25,13 +30,13 @@ function update_script() {
     check_container_resources
 
     if [[ ! -d /var/www/webtrees ]]; then
-        msg_error "No Webtrees Installation Found!"
+        msg_error "No ${APP} Installation Found!"
         exit
     fi
 
     RELEASE=$(curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
     if [[ "${RELEASE}" != "$(cat /opt/webtrees_version.txt)" ]]; then
-        msg_info "Updating Webtrees to v${RELEASE}"
+        msg_info "Updating ${APP} to v${RELEASE}"
         systemctl stop nginx
         tar -czf "/var/www/webtrees_backup_$(date +%F).tar.gz" /var/www/webtrees
         cd /tmp && wget -q "https://github.com/fisharebest/webtrees/releases/download/${RELEASE}/webtrees-${RELEASE}.zip"
@@ -39,9 +44,9 @@ function update_script() {
         chown -R www-data:www-data /var/www/webtrees
         echo "${RELEASE}" > /opt/webtrees_version.txt
         systemctl start nginx
-        msg_ok "Updated Webtrees to v${RELEASE}"
+        msg_ok "Updated ${APP} to v${RELEASE}"
     else
-        msg_ok "Webtrees is up-to-date."
+        msg_ok "${APP} is up-to-date."
     fi
     exit
 }
