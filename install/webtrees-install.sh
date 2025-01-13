@@ -37,7 +37,7 @@ EOF
 msg_ok "Configured MariaDB"
 
 msg_info "Installing Webtrees"
-RELEASE=$(curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
+RELEASE=$(curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/latest | grep -oP '"tag_name": "\K(.*?)(?=")')
 wget -q "https://github.com/fisharebest/webtrees/releases/download/${RELEASE}/webtrees-${RELEASE}.zip" -O /tmp/webtrees.zip
 unzip -q /tmp/webtrees.zip -d /var/www/
 mv /var/www/webtrees-${RELEASE} /var/www/webtrees
