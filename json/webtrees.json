@@ -2,8 +2,7 @@
     "name": "Webtrees",
     "slug": "webtrees",
     "categories": [
-        "genealogy",
-        "web"
+        0
     ],
     "date_created": "2025-01-12",
     "type": "ct",
