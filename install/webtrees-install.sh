@@ -13,16 +13,6 @@ setting_up_container
 network_check
 update_os
 
-msg_info "Adding PHP 8.3 repository"
-$STD apt-get install -y \
-    lsb-release \
-    ca-certificates \
-    apt-transport-https \
-    software-properties-common
-$STD apt-get-repository ppa:ondrej/php -y
-$STD apt-get update
-msg_ok "Added PHP 8.3 repository"
-
 msg_info "Installing Dependencies"
 $STD apt-get install -y \
     mc \
@@ -30,9 +20,20 @@ $STD apt-get install -y \
     curl \
     unzip \
     nginx \
-    php8.3-{fpm,mysql,gd,intl,xml,zip} \
-    mariadb-server
+    mariadb-server \
+    lsb-release \
+    ca-certificates \
+    apt-transport-https \
+    software-properties-common
 msg_ok "Installed Dependencies"
+
+msg_info "Adding PHP 8.3 repository and dependencies"
+$STD curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
+$STD sh -c "echo 'deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php $(lsb_release -sc) main' > /etc/apt/sources.list.d/php.list"
+$STD apt update
+$STD apt-get install -y \
+    php8.3-{fpm,mysql,gd,intl,xml,zip} \
+msg_ok "Added PHP-8.3 repository and its dependencies"
 
 msg_info "Setting PHP 8.3 as default"
 $STD update-alternatives --set php /usr/bin/php8.3
