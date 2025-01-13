@@ -43,12 +43,17 @@ msg_info "Configuring MariaDB"
 DB_NAME="webtrees"
 DB_USER="webtrees"
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
-mysql -uroot <<EOF
-CREATE DATABASE $DB_NAME;
-CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';
-GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';
-FLUSH PRIVILEGES;
-EOF
+
+mysql -u root -e "CREATE DATABASE $DB_NAME;"
+mysql -u root -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS;"
+mysql -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
+mysql -u root -e "FLUSH PRIVILEGES;"
+{
+    echo "Webtrees Credentials:"
+    echo "Database: $DB_NAME"
+    echo "User: $DB_USER"
+    echo "Password: $DB_PASS"
+} >> ~/webtrees.creds
 msg_ok "Configured MariaDB"
 
 msg_info "Installing Webtrees"
@@ -88,10 +93,4 @@ msg_ok "Configured Web Server"
 
 msg_info "Finalizing Installation"
 echo "${RELEASE}" > /opt/webtrees_version.txt
-{
-    echo "Webtrees Credentials:"
-    echo "Database: $DB_NAME"
-    echo "User: $DB_USER"
-    echo "Password: $DB_PASS"
-} >~/webtrees.creds
 msg_ok "Webtrees is ready!"
