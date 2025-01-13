@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source <(curl -s https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/build.func)
+source <(curl -s https://raw.githubusercontent.com/Masked-Kunsiquat/ProxmoxVE/webtrees/misc/build.func)
 
 # App Default Values
 APP="Webtrees"
@@ -50,5 +50,7 @@ start
 build_container
 description
 
-msg_ok "Webtrees setup completed successfully!"
-echo -e "${INFO}${YW} Access Webtrees at http://${IP}:${PORT}${CL}"
+msg_ok "Completed Successfully!\n"
+echo -e "${CREATING}${GN}${APP} setup has been successfully initialized!${CL}"
+echo -e "${INFO}${YW} Access it using the following URL:${CL}"
+echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:80${CL}"

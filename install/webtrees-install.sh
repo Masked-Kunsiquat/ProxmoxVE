@@ -16,12 +16,7 @@ update_os
 msg_info "Installing Dependencies"
 $STD apt-get install -y \
     nginx \
-    php-fpm \
-    php-mysql \
-    php-gd \
-    php-intl \
-    php-xml \
-    php-zip \
+    php-{fpm,mysql,gd,intl,xml,zip}
     unzip \
     mariadb-server
 msg_ok "Installed Dependencies"
