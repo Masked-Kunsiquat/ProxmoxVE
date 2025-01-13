@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source <(curl -s https://raw.githubusercontent.com/Masked-Kunsiquat/ProxmoxVE/webtrees/misc/build.func)
+source <(curl -s https://raw.githubusercontent.com/Masked-Kunsiquat/ProxmoxVE/main/misc/build.func)
 # Copyright (c)
 # Author: Maked-Kunsiquat
 # License: MIT
