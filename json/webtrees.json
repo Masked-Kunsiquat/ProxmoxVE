@@ -1,0 +1,40 @@
+{
+    "name": "Webtrees",
+    "slug": "webtrees",
+    "categories": [
+        "genealogy",
+        "web"
+    ],
+    "date_created": "2025-01-12",
+    "type": "ct",
+    "updateable": true,
+    "privileged": false,
+    "interface_port": 80,
+    "documentation": "https://webtrees.net/",
+    "website": "https://webtrees.net/",
+    "logo": "https://github.com/fisharebest/webtrees/blob/dfe98cc4ce485abb095c5cbbfa6e5dbffe54c7d6/resources/img/webtrees-icon.png",
+    "description": "Webtrees is a web-based application for collaborative genealogy, allowing users to view and manage family trees online.",
+    "install_methods": [
+        {
+            "type": "default",
+            "script": "ct/webtrees.sh",
+            "resources": {
+                "cpu": 2,
+                "ram": 1024,
+                "hdd": 2,
+                "os": "debian",
+                "version": "12"
+            }
+        }
+    ],
+    "default_credentials": {
+        "username": null,
+        "password": null
+    },
+    "notes": [
+        {
+            "text": "Database credentials: `cat webtrees.creds`",
+            "type": "info"
+        }
+    ]
+}
