@@ -31,7 +31,7 @@ msg_info "Adding PHP 8.3 repository and dependencies"
 $STD curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
 $STD sh -c "echo 'deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php $(lsb_release -sc) main' > /etc/apt/sources.list.d/php.list"
 $STD apt update
-$STD apt-get install -y php8.3-{fpm,mysql,gd,intl,xml,zip}
+$STD apt-get install -y php8.3-{fpm,mysql,gd,intl,xml,zip,curl,mbstring}
 msg_ok "Added PHP-8.3 repository and its dependencies"
 
 msg_info "Setting PHP 8.3 as default"
