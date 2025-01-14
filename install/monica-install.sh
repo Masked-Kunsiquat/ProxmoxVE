@@ -12,6 +12,8 @@ update_os
 DB_NAME="monica"
 DB_USER="monica"
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
+ADMIN_EMAIL="admin@example.com"
+ADMIN_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
 
 msg_info "Installing Dependencies"
 $STD apt-get install -y \
@@ -39,6 +41,8 @@ mysql -u root -e "FLUSH PRIVILEGES;"
     echo "Database Name: $DB_NAME"
     echo "Database User: $DB_USER"
     echo "Database Password: $DB_PASS"
+    echo "App Username: $ADMIN_EMAIL"
+    echo "App Password: $ADMIN_PASS"
 } >> ~/monica.creds
 msg_ok "Database Configured"
 
@@ -58,7 +62,7 @@ composer install --no-interaction --no-dev
 yarn install
 yarn run production
 php artisan key:generate &>/dev/null
-php artisan setup:production --email=admin@example.com --password=securepassword &>/dev/null
+php artisan setup:production --email="$ADMIN_EMAIL" --password="$ADMIN_PASS" &>/dev/null
 msg_ok "Monica Setup Completed"
 
 msg_info "Configuring Apache"
@@ -87,9 +91,7 @@ sudo systemctl reload apache2
 msg_ok "Apache Configured"
 
 msg_info "Setting up Crontab"
-sudo crontab -u www-data -e <<EOF
-***** php /var/www/monica/artisan schedule:run >> /dev/null 2>&1
-EOF
+(crontab -u www-data -l 2>/dev/null; echo "***** php /var/www/monica/artisan schedule:run >> /dev/null 2>&1") | crontab -u www-data -
 msg_ok "Crontab configured"
 
 msg_info "Cleaning Up"
