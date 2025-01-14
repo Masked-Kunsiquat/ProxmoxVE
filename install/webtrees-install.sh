@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Copyright (c)
-# Author: Maked-Kunsiquat
+# Author: Masked-Kunsiquat
 # License: MIT
 # https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 # Source: https://github.com/fisharebest/webtrees

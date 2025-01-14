@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-# Import functions and setup environment
+# Copyright (c)
+# Author: Masked-Kunsiquat
+# License: MIT
+# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://github.com/monicahq/monica
+
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
 verb_ip6

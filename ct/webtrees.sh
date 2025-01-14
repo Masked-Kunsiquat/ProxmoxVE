@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source <(curl -s https://raw.githubusercontent.com/Masked-Kunsiquat/ProxmoxVE/main/misc/build.func)
 # Copyright (c)
-# Author: Maked-Kunsiquat
+# Author: Masked-Kunsiquat
 # License: MIT
 # https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 # Source: https://github.com/fisharebest/webtrees
