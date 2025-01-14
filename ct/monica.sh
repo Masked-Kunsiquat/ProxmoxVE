@@ -41,14 +41,14 @@ function update_script() {
         systemctl stop apache2
         tar -czf "/opt/${APP}_backup_$(date +%F).tar.gz" /var/www/monica
 
-        cd /var/www/monica
+        cd /var/www/monica || exit
         git fetch --tags
         git checkout "tags/v${RELEASE}"
 
         composer install --no-interaction --no-dev
         yarn install
         yarn run production
-        php artisan migrate --force
+        php artisan migrate --force &>/dev/null
         systemctl start apache2
 
         echo "${RELEASE}" > /opt/${APP}_version.txt

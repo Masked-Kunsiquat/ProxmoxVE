@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # Import functions and setup environment
-source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
-
+source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
 verb_ip6
 catch_errors
@@ -10,7 +9,6 @@ setting_up_container
 network_check
 update_os
 
-APP="Monica"
 DB_NAME="monica"
 DB_USER="monica"
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
@@ -32,12 +30,12 @@ $STD apt-get install -y \
 msg_ok "Installed Dependencies"
 
 msg_info "Setting up Database"
-$STD mysql -u root -e "CREATE DATABASE $DB_NAME CHARACTER SET utf8mb4_unicode_ci;"
-$STD mysql -u root -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';"
-$STD mysql -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
-$STD mysql -u root -e "FLUSH PRIVILEGES;"
+mysql -u root -e "CREATE DATABASE $DB_NAME CHARACTER SET utf8mb4_unicode_ci;"
+mysql -u root -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';"
+mysql -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
+mysql -u root -e "FLUSH PRIVILEGES;"
 {
-    echo "Monica CRM Credentials"
+    echo "Monica CRM Credentials:"
     echo "Database Name: $DB_NAME"
     echo "Database User: $DB_USER"
     echo "Database Password: $DB_PASS"
@@ -46,9 +44,9 @@ msg_ok "Database Configured"
 
 
 msg_info "Setting up Monica"
-cd /var/www/
+cd /var/www/ || exit
 sudo git clone https://github.com/monicahq/monica.git
-cd monica
+cd monica || exit
 sudo git fetch --tags
 sudo git checkout tags/v3.0.0
 
@@ -59,8 +57,8 @@ sed -i -e "s/DB_USERNAME=.*/DB_USERNAME=$DB_USER/"\
 composer install --no-interaction --no-dev
 yarn install
 yarn run production
-php artisan key:generate
-php artisan setup:production --email=admin@example.com --password=securepassword
+php artisan key:generate &>/dev/null
+php artisan setup:production --email=admin@example.com --password=securepassword &>/dev/null
 msg_ok "Monica Setup Completed"
 
 msg_info "Configuring Apache"
