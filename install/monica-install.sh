@@ -9,12 +9,6 @@ setting_up_container
 network_check
 update_os
 
-DB_NAME="monica"
-DB_USER="monica"
-DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
-ADMIN_EMAIL="admin@example.com"
-ADMIN_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
-
 msg_info "Installing Dependencies"
 $STD apt-get install -y \
     sudo \
@@ -31,6 +25,12 @@ $STD apt-get install -y \
     unzip
 msg_ok "Installed Dependencies"
 
+DB_NAME="monica"
+DB_USER="monica"
+DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
+ADMIN_EMAIL="admin@example.com"
+ADMIN_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
+
 msg_info "Setting up Database"
 mysql -u root -e "CREATE DATABASE $DB_NAME CHARACTER SET utf8mb4_unicode_ci;"
 mysql -u root -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';"
@@ -46,15 +46,14 @@ mysql -u root -e "FLUSH PRIVILEGES;"
 } >> ~/monica.creds
 msg_ok "Database Configured"
 
-
 msg_info "Setting up Monica"
 cd /var/www/ || exit
-sudo git clone https://github.com/monicahq/monica.git
+git clone https://github.com/monicahq/monica.git
 cd monica || exit
-sudo git fetch --tags
-sudo git checkout tags/v3.0.0
+git fetch --tags
+git checkout tags/v3.0.0
 
-sudo cp .env.example .env
+cp .env.example .env
 sed -i -e "s/DB_USERNAME=.*/DB_USERNAME=$DB_USER/"\
     -e "s/DB_PASSWORD=.*/DB_PASSWORD=$DB_PASS/" .env
 
@@ -66,9 +65,9 @@ php artisan setup:production --email="$ADMIN_EMAIL" --password="$ADMIN_PASS" &>/
 msg_ok "Monica Setup Completed"
 
 msg_info "Configuring Apache"
-sudo chown -R www-data:www-data /var/www/monica
-sudo chmod -R 775 /var/www/monica/storage
-sudo a2enmod rewrite
+chown -R www-data:www-data /var/www/monica
+chmod -R 775 /var/www/monica/storage
+a2enmod rewrite
 
 cat <<EOF >/etc/apache2/sites-available/monica.conf
 <VirtualHost *:80>
@@ -86,8 +85,8 @@ cat <<EOF >/etc/apache2/sites-available/monica.conf
 </VirtualHost>
 EOF
 
-sudo a2ensite monica.conf
-sudo systemctl reload apache2
+a2ensite monica.conf
+systemctl reload apache2
 msg_ok "Apache Configured"
 
 msg_info "Setting up Crontab"
