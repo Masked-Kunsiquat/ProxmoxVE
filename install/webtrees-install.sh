@@ -48,10 +48,10 @@ DB_NAME="webtrees"
 DB_USER="webtrees"
 DB_PASS=$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | head -c13)
 
-mysql -u root -e "CREATE DATABASE $DB_NAME;"
-mysql -u root -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
-mysql -u root -e "FLUSH PRIVILEGES;"
+$STD mysql -u root -e "CREATE DATABASE $DB_NAME;"
+$STD mysql -u root -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';"
+$STD mysql -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';"
+$STD mysql -u root -e "FLUSH PRIVILEGES;"
 {
     echo "Webtrees Database Credentials:"
     echo "Database: $DB_NAME"
@@ -63,9 +63,9 @@ msg_ok "Configured MariaDB"
 msg_info "Installing Webtrees"
 RELEASE=$(curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/latest | grep -oP '"tag_name": "\K(.*?)(?=")')
 wget -q "https://github.com/fisharebest/webtrees/releases/download/${RELEASE}/webtrees-${RELEASE}.zip" -O /tmp/webtrees.zip
-unzip -q /tmp/webtrees.zip -d /var/opt/
-chown -R www-data:www-data /opt/webtrees
-chown -R 755 /opt/webtrees
+$STD unzip -q /tmp/webtrees.zip -d /opt/
+$STD chown -R www-data:www-data /opt/webtrees
+$STD chown -R 755 /opt/webtrees
 msg_ok "Installed Webtrees"
 
 msg_info "Configuring Web Server"
@@ -91,12 +91,12 @@ server {
 }
 EOF
 
-ln -s /etc/nginx/sites-available/webtrees /etc/nginx/sites-enabled/webtrees
-rm /etc/nginx/sites-enabled/default
+$STD ln -s /etc/nginx/sites-available/webtrees /etc/nginx/sites-enabled/webtrees
+$STD rm /etc/nginx/sites-enabled/default
 $STD systemctl enable nginx
 $STD systemctl enable mariadb
 $STD systemctl enable php-fpm
-systemctl reload nginx
+$STD systemctl reload nginx
 msg_ok "Configured Web Server"
 
 msg_info "Finalizing Installation"
