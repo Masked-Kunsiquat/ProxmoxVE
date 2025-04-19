@@ -93,6 +93,9 @@ EOF
 
 ln -s /etc/nginx/sites-available/webtrees /etc/nginx/sites-enabled/webtrees
 rm /etc/nginx/sites-enabled/default
+$STD systemctl enable nginx
+$STD systemctl enable mariadb
+$STD systemctl enable php-fpm
 systemctl reload nginx
 msg_ok "Configured Web Server"
 
