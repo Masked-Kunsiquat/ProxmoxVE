@@ -101,4 +101,5 @@ msg_ok "Configured Web Server"
 
 msg_info "Finalizing Installation"
 echo "${RELEASE}" > "/opt/webtrees_version.txt"
+rm -f /tmp/webtrees.zip
 msg_ok "Webtrees is ready!"
