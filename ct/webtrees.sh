@@ -24,6 +24,12 @@ variables
 color
 catch_errors
 
+get_latest_release() {
+    curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/latest |
+        grep -oP '"tag_name": "\K(.*?)(?=")'
+}
+
+
 function update_script() {
     header_info
     check_container_storage
@@ -34,7 +40,7 @@ function update_script() {
         exit 1
     fi
 
-    RELEASE=$(curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
+    RELEASE=$(get_latest_release)
     if [[ ! -f /opt/webtrees_version.txt ]] || [[ "${RELEASE}" != "$(cat /opt/webtrees_version.txt)" ]]; then
         msg_info "Updating ${APP} to v${RELEASE}"
         $STD systemctl stop nginx
