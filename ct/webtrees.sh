@@ -35,7 +35,7 @@ function update_script() {
     check_container_storage
     check_container_resources
 
-    if [[ ! -d /var/www/webtrees ]]; then
+    if [[ ! -d /opt/webtrees ]]; then
         msg_error "No ${APP} Installation Found!"
         exit 1
     fi
@@ -44,11 +44,11 @@ function update_script() {
     if [[ ! -f /opt/webtrees_version.txt ]] || [[ "${RELEASE}" != "$(cat /opt/webtrees_version.txt)" ]]; then
         msg_info "Updating ${APP} to v${RELEASE}"
         $STD systemctl stop nginx
-        $STD tar -czf "/var/www/webtrees_backup_$(date +%F).tar.gz" /var/www/webtrees
+        $STD tar -czf "/opt/webtrees_backup_$(date +%F).tar.gz" /opt/webtrees
         cd /tmp && wget -q "https://github.com/fisharebest/webtrees/releases/download/${RELEASE}/webtrees-${RELEASE}.zip"
-        unzip -o -q webtrees-${RELEASE}.zip -d /var/www/webtrees
+        unzip -o -q webtrees-${RELEASE}.zip -d /opt/webtrees
         rm -f "webtrees-${RELEASE}.zip"
-        $STD chown -R www-data:www-data /var/www/webtrees
+        $STD chown -R www-data:www-data /opt/webtrees
         echo "${RELEASE}" > /opt/webtrees_version.txt
         $STD systemctl start nginx
         msg_ok "Updated ${APP} to v${RELEASE}"

@@ -63,8 +63,8 @@ msg_ok "Configured MariaDB"
 msg_info "Installing Webtrees"
 RELEASE=$(curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/latest | grep -oP '"tag_name": "\K(.*?)(?=")')
 wget -q "https://github.com/fisharebest/webtrees/releases/download/${RELEASE}/webtrees-${RELEASE}.zip" -O /tmp/webtrees.zip
-unzip -q /tmp/webtrees.zip -d /var/www/
-chown -R www-data:www-data /var/www/webtrees
+unzip -q /tmp/webtrees.zip -d /var/opt/
+chown -R www-data:www-data /opt/webtrees
 msg_ok "Installed Webtrees"
 
 msg_info "Configuring Web Server"
@@ -72,7 +72,7 @@ cat <<EOF >/etc/nginx/sites-available/webtrees
 server {
     listen 80;
     server_name localhost;
-    root /var/www/webtrees;
+    root /opt/webtrees;
     index index.php;
 
     location / {
