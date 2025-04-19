@@ -65,6 +65,7 @@ RELEASE=$(curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/
 wget -q "https://github.com/fisharebest/webtrees/releases/download/${RELEASE}/webtrees-${RELEASE}.zip" -O /tmp/webtrees.zip
 unzip -q /tmp/webtrees.zip -d /var/opt/
 chown -R www-data:www-data /opt/webtrees
+chown -R 755 /opt/webtrees
 msg_ok "Installed Webtrees"
 
 msg_info "Configuring Web Server"
