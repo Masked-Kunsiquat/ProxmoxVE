@@ -41,6 +41,7 @@ function update_script() {
         $STD tar -czf "/var/www/webtrees_backup_$(date +%F).tar.gz" /var/www/webtrees
         cd /tmp && wget -q "https://github.com/fisharebest/webtrees/releases/download/${RELEASE}/webtrees-${RELEASE}.zip"
         unzip -o -q webtrees-${RELEASE}.zip -d /var/www/webtrees
+        rm -f "webtrees-${RELEASE}.zip"
         $STD chown -R www-data:www-data /var/www/webtrees
         echo "${RELEASE}" > /opt/webtrees_version.txt
         $STD systemctl start nginx
