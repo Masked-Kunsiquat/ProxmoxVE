@@ -37,13 +37,13 @@ function update_script() {
     RELEASE=$(curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
     if [[ "${RELEASE}" != "$(cat /opt/webtrees_version.txt)" ]]; then
         msg_info "Updating ${APP} to v${RELEASE}"
-        systemctl stop nginx
-        tar -czf "/var/www/webtrees_backup_$(date +%F).tar.gz" /var/www/webtrees
+        $STD systemctl stop nginx
+        $STD tar -czf "/var/www/webtrees_backup_$(date +%F).tar.gz" /var/www/webtrees
         cd /tmp && wget -q "https://github.com/fisharebest/webtrees/releases/download/${RELEASE}/webtrees-${RELEASE}.zip"
         unzip -o -q webtrees-${RELEASE}.zip -d /var/www/webtrees
-        chown -R www-data:www-data /var/www/webtrees
+        $STD chown -R www-data:www-data /var/www/webtrees
         echo "${RELEASE}" > /opt/webtrees_version.txt
-        systemctl start nginx
+        $STD systemctl start nginx
         msg_ok "Updated ${APP} to v${RELEASE}"
     else
         msg_ok "${APP} is up-to-date."
