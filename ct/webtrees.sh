@@ -31,7 +31,7 @@ function update_script() {
 
     if [[ ! -d /var/www/webtrees ]]; then
         msg_error "No ${APP} Installation Found!"
-        exit
+        exit 1
     fi
 
     RELEASE=$(curl -fsSL https://api.github.com/repos/fisharebest/webtrees/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
@@ -49,7 +49,7 @@ function update_script() {
     else
         msg_ok "${APP} is up-to-date."
     fi
-    exit
+    exit 0
 }
 
 start
